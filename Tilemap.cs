@@ -61,7 +61,7 @@ public class TileMap
         Properties = new List<Property>();
         Tilesets = new List<TilesetRef>();
     }
-    public static TileMap Load(StreamReader fstream)
+    public static TileMap Load(StreamReader fstream, string? path = "")
     {
         try
         {
@@ -71,12 +71,31 @@ public class TileMap
             });
             if (map is null)
                 throw new Exception("Failed to deserialize map");
+            if (path is not null)
+            {
+                foreach (var tset in map.Tilesets)
+                {
+                    tset.Source = Path.Join(path, Path.GetFileNameWithoutExtension(tset.Source) + ".json");
+                }
+            }
             return map;
         }
         catch (JsonException e)
         {
             throw new Exception($"Failed to deserialize map: {e.Message}");
         }
+    }
+    private Dictionary<int, Tileset> _tilesetCache = new();
+    public Tileset GetTilemap(int gid, bool forceReload = false)
+    {
+        if (_tilesetCache.ContainsKey(gid) && !forceReload)
+        {
+            return _tilesetCache[gid];
+        }
+        Tilesets.Sort((a, b) => b.FirstGID - a.FirstGID);
+        var tsetMeta = Tilesets.First(x => x.FirstGID <= gid);
+        var tileset = Tileset.Load(new StreamReader(tsetMeta.Source));
+        return _tilesetCache[gid] = tileset;
     }
 }
 
@@ -111,7 +130,7 @@ public class Layer
     public string? Class { get; set; }
     // zlib, gzip, zstd (since Tiled 1.3) or empty (default). tilelayer only.
     public string Compression { get; set; } = "";
-    // TODO: support base64
+    // TODO: support base64; make a hook and store it as List<unint>; dont need to store as string and array 
     // Array of unsigned int (GIDs) or base64-encoded data. tilelayer only.
     public List<uint> Data { get; set; }
     // topdown (default) or index. objectgroup only.
@@ -139,8 +158,6 @@ public class Layer
     public int StartY { get; set; }
     public string? TintColor { get; set; }
     public string? TransparentColor { get; set; }
-    // TODO: make this enum
-    // tilelayer, objectgroup, imagelayer or group
     public string Type { get; set; } = "";
     public bool Visible { get; set; }
     public int Width { get; set; }
