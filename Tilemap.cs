@@ -1,5 +1,6 @@
+using System.Buffers.Text;
 using System.Data;
-using System.Drawing;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -72,11 +73,32 @@ public class TileMap
             });
             if (map is null)
                 throw new Exception("Failed to deserialize map");
+
+            // Post deserialization conversions
+
+            // Make sure tilesets are relative to the map file if path is passed in
             if (path is not null)
             {
                 foreach (var tset in map.Tilesets)
                 {
                     tset.Source = Path.Join(path, Path.GetFileNameWithoutExtension(tset.Source) + ".json");
+                }
+            }
+
+            // conver layer data (it could be b64 string or array of uint)
+            foreach (var layer in map.Layers.Where(x => x.RawData is not null))
+            {
+                if (layer.Encoding == "csv" || layer.Encoding == "")
+                {
+                    layer.Data = ((JsonElement)layer.RawData).Deserialize<List<uint>>() ?? new();
+                }
+                else if (layer.Encoding == "base64")
+                {
+                    layer.Data = B64Decode(layer.RawData, layer.Compression, map.CompressionLevel);
+                }
+                else
+                {
+                    throw new Exception($"Unsupported layer encoding {layer.Encoding}");
                 }
             }
             return map;
@@ -86,6 +108,18 @@ public class TileMap
             throw new Exception($"Failed to deserialize map: {e.Message}");
         }
     }
+
+    private static List<uint> B64Decode(JsonElement rawData, string compression, int level)
+    {
+        var bytes = rawData.GetBytesFromBase64();
+        var res = new List<uint>();
+        for (int i = 0; i < bytes.Length; i += 4)
+        {
+            res.Add(BitConverter.ToUInt32(bytes, i));
+        }
+        return res;
+    }
+
     private Dictionary<int, Tileset> _tilesetCache = new();
     public Tileset GetTilemap(int gid, bool forceReload = false)
     {
@@ -154,7 +188,47 @@ internal class StringEnumConverter<T> : JsonConverter<T>
         throw new NotImplementedException();
     }
 }
+// internal class LayerDataConverter : JsonConverter<List<uint>>
+// {
+//     public override List<uint>? Read(ref Utf8JsonReader reader, Type typeToConvert, object oj, JsonSerializerOptions options)
+//     {
+//         try
+//         {
+//             if (reader.TokenType == JsonTokenType.StartArray)
+//             {
+//                 reader.Read();
+//                 var res = new List<uint>();
+//                 while (reader.TokenType == JsonTokenType.Number)
+//                 {
+//                     var toke = reader.GetUInt32();
+//                     reader.Read();
+//                     res.Add(toke);
+//                 }
 
+//                 return res;
+//             }
+//             else if (reader.TokenType == JsonTokenType.String)
+//             {
+//                 var rawValue = reader.GetString() ?? "";
+//                 var parts = rawValue.Split(',');
+//                 var res = parts.Select(x => uint.Parse(x)).ToList();
+//                 // return DecodeB64(rawValue, Compression);
+//                 var b = Convert.FromBase64String(rawValue);
+//             }
+//             throw new Exception($"Unsupported token type: {reader.TokenType}");
+//         }
+//         catch (Exception e)
+//         {
+//             Console.WriteLine($"{e.Message}");
+//             throw new Exception($"Failed to convert to Layer Data: {typeToConvert.Name}");
+//         }
+//     }
+
+//     public override void Write(Utf8JsonWriter writer, List<uint> value, JsonSerializerOptions options)
+//     {
+//         throw new NotImplementedException();
+//     }
+// }
 
 public class Layer
 {
@@ -164,7 +238,10 @@ public class Layer
     public string Compression { get; set; } = "";
     // TODO: support base64; make a hook and store it as List<unint>; dont need to store as string and array 
     // Array of unsigned int (GIDs) or base64-encoded data. tilelayer only.
-    public List<uint> Data { get; set; }
+    [JsonPropertyName("data")]
+    public dynamic? RawData { get; set; } = null;
+    [JsonIgnore]
+    public List<uint> Data { get; set; } // this will get mapped after json deserialization
     // topdown (default) or index. objectgroup only.
     public string DrawOrder { get; set; } = "";
     // csv (default) or base64. tilelayer only.

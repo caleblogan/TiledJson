@@ -1,9 +1,11 @@
-﻿namespace TiledJson;
+﻿using System.Text.Json;
+
+namespace TiledJson;
 class Program
 {
     static void Main(string[] args)
     {
-        var map = TileMap.Load(new StreamReader("tests/map2.json"), path: "tests");
+        var map = TileMap.Load(new StreamReader("tests/map2-b64.json"), path: "tests");
         Console.WriteLine($"Map: {map.Type} {map.Version} {map.Width}x{map.Height}");
         foreach (var prop in map.Properties)
         {
@@ -16,6 +18,25 @@ class Program
                 Console.WriteLine($"id = {id + 2}");
             }
         }
+
+        foreach (var layer in map.Layers)
+        {
+            Console.WriteLine($"Data: {layer.Data.Count} {layer.Name} ");
+            var i = 0;
+            foreach (var tile in layer.Data)
+            {
+                Console.Write($"{tile,-3} ");
+                i++;
+                if (i % 30 == 0)
+                {
+                    Console.WriteLine($"");
+                }
+            }
+            Console.WriteLine($"");
+
+        }
+
+
         Console.WriteLine($"\nTileset:");
         var tileGID = 21; // 65 - 1
         var tileset = map.GetTilemap(tileGID);
