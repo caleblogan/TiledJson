@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace TiledJson;
+﻿namespace TiledJson;
 class Program
 {
     static void Main(string[] args)
@@ -19,6 +17,14 @@ class Program
                 int id = prop.Value.GetInt32();
                 Console.WriteLine($"id = {id + 2}");
             }
+        }
+        Console.WriteLine($"\nTileset:");
+
+        var tileset = Tileset.Load(new StreamReader("tests/tileset.json"));
+        Console.WriteLine($"Tileset: {tileset.Name} {tileset.TileCount} {tileset.TileWidth}x{tileset.TileHeight}");
+        foreach (var tile in tileset.Tiles ?? new())
+        {
+            tile.Animation?.ForEach(x => Console.WriteLine($"Tile: {x.TileId} {x.Duration}"));
         }
 
     }

@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace TiledJson;
 
 public class Tileset
@@ -30,6 +32,23 @@ public class Tileset
     public string Type { get; set; } = "tileset";
     public string Version { get; set; } = "";
     public List<WangSet> WangSets { get; set; } = new();
+    public static Tileset Load(StreamReader fstream)
+    {
+        try
+        {
+            var tset = JsonSerializer.Deserialize<Tileset>(fstream.ReadToEnd(), new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            if (tset is null)
+                throw new Exception("Failed to deserialize map");
+            return tset;
+        }
+        catch (JsonException e)
+        {
+            throw new Exception($"Failed to deserialize map: {e.Message}");
+        }
+    }
 }
 
 public class Grid
