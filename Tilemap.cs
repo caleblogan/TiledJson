@@ -1,4 +1,5 @@
 using System.Data;
+using System.Drawing;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -92,10 +93,41 @@ public class TileMap
         {
             return _tilesetCache[gid];
         }
+        var tref = GetTilesetRef(gid);
+        var tileset = Tileset.Load(new StreamReader(tref.Source));
+        return _tilesetCache[gid] = tileset;
+    }
+
+    public TilesetRef GetTilesetRef(int gid)
+    {
         Tilesets.Sort((a, b) => b.FirstGID - a.FirstGID);
         var tsetMeta = Tilesets.First(x => x.FirstGID <= gid);
-        var tileset = Tileset.Load(new StreamReader(tsetMeta.Source));
-        return _tilesetCache[gid] = tileset;
+        return tsetMeta;
+    }
+
+    public Rect GetTileRect(int gid)
+    {
+        var tileset = GetTilemap(gid);
+        var localId = gid - GetTilesetRef(gid).FirstGID;
+
+        var x = localId % tileset.Columns;
+        var y = localId / tileset.Columns;
+        return new Rect(x * tileset.TileWidth, y * tileset.TileHeight, tileset.TileWidth, tileset.TileHeight);
+    }
+}
+
+public class Rect
+{
+    public int X { get; }
+    public int Y { get; }
+    public int Width { get; }
+    public int Height { get; }
+    public Rect(int x, int y, int width, int height)
+    {
+        X = x;
+        Y = y;
+        Width = width;
+        Height = height;
     }
 }
 
@@ -245,7 +277,11 @@ public class Property
     }
 }
 
-// TOOD: convert Source to native type
+/// <summary>
+/// Reference to a tileset
+/// FirstGID: The first global tile ID of this tileset (this global ID maps to the first tile in this tileset).
+///     This conversion is done by subtracting FirstGID from the global tile ID of a tile.
+/// </summary>
 public class TilesetRef
 {
     public int FirstGID { get; set; }

@@ -17,7 +17,12 @@ class Program
             }
         }
         Console.WriteLine($"\nTileset:");
-        var tileset = map.GetTilemap(65);
+        var tileGID = 21; // 65 - 1
+        var tileset = map.GetTilemap(tileGID);
+        var rect = map.GetTileRect(tileGID);
+        Console.WriteLine($"rect: {rect.X} {rect.Y} {rect.Width}x{rect.Height}");
+
+        // 400 - 301
         var tileset2 = map.GetTilemap(400);
 
         // var tileset = Tileset.Load(new StreamReader("tests/tileset.json"));

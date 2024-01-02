@@ -1,154 +1,163 @@
-{ "columns":20,
- "image":"..\/..\/..\/..\/Downloads\/tileset.png",
- "imageheight":240,
- "imagewidth":240,
- "margin":0,
- "name":"tileset",
- "spacing":0,
- "tilecount":400,
- "tiledversion":"1.10.2",
- "tileheight":12,
- "tiles":[
-        {
-         "animation":[
-                {
-                 "duration":100,
-                 "tileid":243
-                }, 
-                {
-                 "duration":100,
-                 "tileid":244
-                }, 
-                {
-                 "duration":100,
-                 "tileid":245
-                }, 
-                {
-                 "duration":100,
-                 "tileid":246
-                }, 
-                {
-                 "duration":100,
-                 "tileid":247
-                }, 
-                {
-                 "duration":100,
-                 "tileid":248
-                }],
-         "id":144
-        }, 
-        {
-         "id":242,
-         "properties":[
-                {
-                 "name":"animleft",
-                 "type":"object",
-                 "value":0
-                }, 
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"player"
-                }]
-        }, 
-        {
-         "animation":[
-                {
-                 "duration":100,
-                 "tileid":243
-                }, 
-                {
-                 "duration":100,
-                 "tileid":244
-                }, 
-                {
-                 "duration":100,
-                 "tileid":245
-                }, 
-                {
-                 "duration":100,
-                 "tileid":246
-                }, 
-                {
-                 "duration":100,
-                 "tileid":247
-                }, 
-                {
-                 "duration":100,
-                 "tileid":248
-                }],
-         "id":243,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"diamond-anim"
-                }],
-         "type":"diamond"
-        }, 
-        {
-         "animation":[
-                {
-                 "duration":100,
-                 "tileid":266
-                }, 
-                {
-                 "duration":100,
-                 "tileid":267
-                }, 
-                {
-                 "duration":100,
-                 "tileid":268
-                }, 
-                {
-                 "duration":100,
-                 "tileid":269
-                }, 
-                {
-                 "duration":100,
-                 "tileid":270
-                }, 
-                {
-                 "duration":100,
-                 "tileid":271
-                }],
-         "id":360,
-         "properties":[
-                {
-                 "name":"type",
-                 "type":"string",
-                 "value":"player-anim-right"
-                }]
-        }, 
-        {
-         "animation":[
-                {
-                 "duration":100,
-                 "tileid":243
-                }, 
-                {
-                 "duration":100,
-                 "tileid":244
-                }, 
-                {
-                 "duration":100,
-                 "tileid":245
-                }, 
-                {
-                 "duration":100,
-                 "tileid":246
-                }, 
-                {
-                 "duration":100,
-                 "tileid":247
-                }, 
-                {
-                 "duration":100,
-                 "tileid":248
-                }],
-         "id":364
-        }],
- "tilewidth":12,
- "type":"tileset",
- "version":"1.10"
+{
+       "columns": 20,
+       "image": "..\/..\/..\/..\/Downloads\/tileset.png",
+       "imageheight": 240,
+       "imagewidth": 240,
+       "margin": 0,
+       "name": "tileset",
+       "spacing": 0,
+       "tilecount": 400,
+       "tiledversion": "1.10.2",
+       "tileheight": 12,
+       "tiles": [
+              {
+                     "animation": [
+                            {
+                                   "duration": 100,
+                                   "tileid": 243
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 244
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 245
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 246
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 247
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 248
+                            }
+                     ],
+                     "id": 144
+              },
+              {
+                     "id": 242,
+                     "properties": [
+                            {
+                                   "name": "animleft",
+                                   "type": "object",
+                                   "value": 0
+                            },
+                            {
+                                   "name": "type",
+                                   "type": "string",
+                                   "value": "player"
+                            }
+                     ]
+              },
+              {
+                     "animation": [
+                            {
+                                   "duration": 100,
+                                   "tileid": 243
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 244
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 245
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 246
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 247
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 248
+                            }
+                     ],
+                     "id": 243,
+                     "properties": [
+                            {
+                                   "name": "type",
+                                   "type": "string",
+                                   "value": "diamond-anim"
+                            }
+                     ],
+                     "type": "diamond"
+              },
+              {
+                     "animation": [
+                            {
+                                   "duration": 100,
+                                   "tileid": 266
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 267
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 268
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 269
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 270
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 271
+                            }
+                     ],
+                     "id": 360,
+                     "properties": [
+                            {
+                                   "name": "type",
+                                   "type": "string",
+                                   "value": "player-anim-right"
+                            }
+                     ]
+              },
+              {
+                     "animation": [
+                            {
+                                   "duration": 100,
+                                   "tileid": 243
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 244
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 245
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 246
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 247
+                            },
+                            {
+                                   "duration": 100,
+                                   "tileid": 248
+                            }
+                     ],
+                     "id": 364
+              }
+       ],
+       "tilewidth": 12,
+       "type": "tileset",
+       "version": "1.10"
 }
