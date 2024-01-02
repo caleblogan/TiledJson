@@ -1,5 +1,4 @@
 using System.Data;
-using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -156,13 +155,59 @@ public class Layer
 
 public class Chunk
 {
-    // Properties of the Chunk class go here
+    // TODO: support base64
+    public List<uint> Data { get; set; } = new();
+    public int Height { get; set; }
+    public int Width { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
 }
 
 public class TiledObject
 {
-    // Properties of the TiledObject class go here
+    public bool Ellipse { get; set; }
+    public int Gid { get; set; }
+    public double Height { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; } = "";
+    public bool Point { get; set; }
+    public List<Point> Polygon { get; set; } = new();
+    public List<Point> Polyline { get; set; } = new();
+    public List<Property> Properties { get; set; } = new();
+    public double Rotation { get; set; }
+    // TODO: should point to object instance
+    public string Template { get; set; } = "";
+    public TextObject? Text { get; set; }
+    public string? Type { get; set; }
+    public bool Visible { get; set; }
+    public double Width { get; set; }
+    public double X { get; set; }
+    public double Y { get; set; }
 }
+
+public class Point
+{
+    public double X { get; set; }
+    public double Y { get; set; }
+}
+
+public class TextObject
+{
+    public bool Bold { get; set; } = false;
+    public string Color { get; set; } = "#000000";
+    public string FontFamily { get; set; } = "sans-serif";
+    public string HAlign { get; set; } = "left";
+    public bool Italic { get; set; } = false;
+    public bool Kerning { get; set; } = true;
+    public int PixelSize { get; set; } = 16;
+    public bool Strikeout { get; set; } = false;
+    public string Text { get; set; } = "";
+    public bool Underline { get; set; } = false;
+    public string VAlign { get; set; } = "top";
+    public bool Wrap { get; set; } = false;
+
+}
+
 
 // TODO: convert Value to native type
 public class Property
