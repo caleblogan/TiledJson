@@ -46,7 +46,7 @@ public class TileMap
     // Map grid height
     public int TileHeight { get; set; }
     // Array of Tilesets
-    public List<Tileset> Tilesets { get; set; }
+    public List<TilesetRef> Tilesets { get; set; }
     // Map grid width
     public int TileWidth { get; set; }
     // map (since 1.0)
@@ -59,7 +59,7 @@ public class TileMap
     {
         Layers = new List<Layer>();
         Properties = new List<Property>();
-        Tilesets = new List<Tileset>();
+        Tilesets = new List<TilesetRef>();
     }
     public static TileMap Load(StreamReader fstream)
     {
@@ -229,7 +229,7 @@ public class Property
 }
 
 // TOOD: convert Source to native type
-public class Tileset
+public class TilesetRef
 {
     public int FirstGID { get; set; }
     public string Source { get; set; } = "";
