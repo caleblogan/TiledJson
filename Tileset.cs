@@ -18,6 +18,7 @@ public class Tileset
     public string ObjectAlignment { get; set; } = "unspecified";
     public List<Property> Properties { get; set; } = new();
     public string Source { get; set; } = "";
+    // TODO: this needs to be used when returning tile rect
     public int Spacing { get; set; }
     public List<Terrain>? Terrains { get; set; }
     public int TileCount { get; set; }

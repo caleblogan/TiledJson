@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace TiledJson;
-public class TileMap
+public class Tilemap
 {
     // Hex-formatted color (#RRGGBB or #AARRGGBB) (optional)
     public string? BackgroundColor { get; set; }
@@ -55,17 +55,17 @@ public class TileMap
     public string Version { get; set; } = "";
     // Number of tile columns
     public int Width { get; set; }
-    public TileMap()
+    public Tilemap()
     {
         Layers = new List<Layer>();
         Properties = new List<Property>();
         Tilesets = new List<TilesetRef>();
     }
-    public static TileMap Load(StreamReader fstream, string? path = "")
+    public static Tilemap Load(StreamReader fstream, string? path = "")
     {
         try
         {
-            var map = JsonSerializer.Deserialize<TileMap>(fstream.ReadToEnd(), new JsonSerializerOptions
+            var map = JsonSerializer.Deserialize<Tilemap>(fstream.ReadToEnd(), new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
@@ -123,8 +123,8 @@ public class TileMap
         throw new Exception($"Unsupported compression {compression} {level}");
     }
 
-    private Dictionary<int, Tileset> _tilesetCache = new();
-    public Tileset GetTilemap(int gid, bool forceReload = false)
+    private Dictionary<uint, Tileset> _tilesetCache = new();
+    public Tileset GetTileset(uint gid, bool forceReload = false)
     {
         if (_tilesetCache.ContainsKey(gid) && !forceReload)
         {
@@ -135,31 +135,37 @@ public class TileMap
         return _tilesetCache[gid] = tileset;
     }
 
-    public TilesetRef GetTilesetRef(int gid)
+    public TilesetRef GetTilesetRef(uint gid)
     {
         Tilesets.Sort((a, b) => b.FirstGID - a.FirstGID);
         var tsetMeta = Tilesets.First(x => x.FirstGID <= gid);
         return tsetMeta;
     }
 
-    public Rect GetTileRect(int gid)
+    public Rect GetTileRect(uint gid)
     {
-        var tileset = GetTilemap(gid);
-        var localId = gid - GetTilesetRef(gid).FirstGID;
+        if (gid == 0) { throw new Exception("gid cannot be 0"); }
+        var tileset = GetTileset(gid);
+        if (tileset.Spacing != 0)
+        {
+            // TODO: tile spacing; let me know and ill add it. should be easy.
+            Console.WriteLine("WARNING: tileset spacing is not supported yet");
+        }
+        var localId = gid - (uint)GetTilesetRef(gid).FirstGID;
 
-        var x = localId % tileset.Columns;
-        var y = localId / tileset.Columns;
-        return new Rect(x * tileset.TileWidth, y * tileset.TileHeight, tileset.TileWidth, tileset.TileHeight);
+        var x = (uint)(localId % tileset.Columns);
+        var y = (uint)(localId / tileset.Columns);
+        return new Rect(x * (uint)tileset.TileWidth, y * (uint)tileset.TileHeight, tileset.TileWidth, tileset.TileHeight);
     }
 }
 
 public class Rect
 {
-    public int X { get; }
-    public int Y { get; }
+    public uint X { get; }
+    public uint Y { get; }
     public int Width { get; }
     public int Height { get; }
-    public Rect(int x, int y, int width, int height)
+    public Rect(uint x, uint y, int width, int height)
     {
         X = x;
         Y = y;
