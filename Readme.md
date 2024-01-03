@@ -1,5 +1,5 @@
-## Tiled Json Load for  C#
-Library loader for the Tiled file formats that can be used in programming environemtn.
+## Tiled Json Loader for  C#
+Library loader for the Tiled file formats that can be used in any programming environment.
 Only supports tileset and tilemaps in the json file format. Files exentions must be .json.
 
 The library class properties are very close to the spec https://doc.mapeditor.org/en/stable/reference/json-map-format/.
@@ -9,7 +9,7 @@ The main difference is that properties are in pascal case.
 `dotnet add package tiledjson`
 
 ### Base Usage
-`
+```C#
 // Load map
 // path should point to where tileset files are stored
 var map = TileMap.Load(new StreamReader("tests/map2-custom-class.json"), path: "tests");
@@ -25,16 +25,17 @@ var tileset = map.GetTilemap(gid);
 //   if tile width is 12x12
 //   then rect is Rect(x:12, y:0, width:12, height:12)
 var rect = map.GetTileRect(gid);
-`
+```
 
 ### Raylib Example
-`
+```C#
 TODO: raylib
-`
+```
 
 ### Custom Properties
 You can get custom properties by using the `.Get<T>` help function
-`
+
+```C#
 class Vec2
 {
     public int X { get; set; }
@@ -52,16 +53,16 @@ foreach (var prop in map.Properties)
         Console.WriteLine($"Prop: {prop.Name}={prop.Get<string>()}");
     }
 }
-`
+```
 
 or you can get the string version of the props value and transform it however you wish.
 `Value` is stored as a `JsonElement` type.
-`
+```C#
 foreach (var prop in map.Properties)
 {
     Console.WriteLine($"Prop: {pop.Value}");
 }
-`
+```
 
 ### Not yet supported
 - compression
