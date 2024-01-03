@@ -10,7 +10,6 @@
       <RepositoryUrl>https://github.com/caleblogan/TiledJson.git</RepositoryUrl>
       <PackageTags>tiled,tmx,tsx,json</PackageTags>
       <PackageReadmeFile>README.md</PackageReadmeFile>
-
     </PropertyGroup>
 
   <PropertyGroup>
@@ -20,5 +19,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+      <None Include="README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
 </Project>
