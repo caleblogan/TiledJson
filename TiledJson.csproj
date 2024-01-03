@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+      <Authors>Caleb Logan</Authors>
+      <PackageId>TiledJson</PackageId>
+      <Description>
+        Libray for loading the Tiled map editor's JSON format.
+      </Description>
+      <RepositoryUrl>https://github.com/caleblogan/TiledJson.git</RepositoryUrl>
+      <PackageTags>tiled,tmx,tsx,json</PackageTags>
+      <ReadmeFile>README.md</ReadmeFile>
+    </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
