@@ -27,10 +27,6 @@ var tileset = map.GetTilemap(gid);
 var rect = map.GetTileRect(gid);
 ```
 
-### Raylib Example
-```C#
-TODO: raylib
-```
 
 ### Custom Properties
 You can get custom properties by using the `.Get<T>` help function
@@ -61,6 +57,51 @@ or you can get the string version of the props value and transform it however yo
 foreach (var prop in map.Properties)
 {
     Console.WriteLine($"Prop: {pop.Value}");
+}
+```
+
+### Raylib Example
+If you have more than one tileset, you will need to precompute a texture for each tileset image.
+```C#
+using TiledJson;
+using Raylib_cs;
+using System.Numerics;
+
+Raylib.SetConfigFlags(ConfigFlags.FLAG_WINDOW_RESIZABLE);
+Raylib.InitWindow(1000, 600, "Tiled Json Demo");
+Raylib.SetTargetFPS(60);
+
+var map = Tilemap.Load(new StreamReader("tests/map.json"), path: "tests");
+
+var tileset = map.GetTileset(1);
+var imgSrc = Path.Join("tests", Path.GetFileName(tileset.Image));
+var tilesetImg = Raylib.LoadImage(imgSrc);
+var texture = Raylib.LoadTextureFromImage(tilesetImg);
+
+var layer = map.Layers.First(x => x.Data.Count > 0);
+while (!Raylib.WindowShouldClose())
+{
+    Raylib.BeginDrawing();
+    Raylib.ClearBackground(Color.BLACK);
+
+    for (int y = 0; y < layer.Height; y++)
+    {
+        for (int x = 0; x < layer.Width; x++)
+        {
+            var gid = layer.Data[y * layer.Width + x];
+            if (gid == 0) continue; // 0 represents no tile
+            var rect = map.GetTileRect(gid);
+            Raylib.DrawTexturePro(
+                texture,
+                new Rectangle(rect.X, rect.Y, rect.Width, rect.Height), // src rect in sprite
+                new Rectangle(x * rect.Width, y * rect.Height, rect.Width, rect.Height), // dest rect in window
+                new Vector2(0, 0),
+                0,
+                Color.WHITE
+            );
+        }
+    }
+    Raylib.EndDrawing();
 }
 ```
 
